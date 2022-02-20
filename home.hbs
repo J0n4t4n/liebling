@@ -6,12 +6,14 @@ It can be used also as the home page or the default page.
 {{!-- This block preloads specific assets for the index page --}}
 {{#contentFor "preload"}}
   <link rel="preload" href="{{asset "css/home.css"}}" as="style" />
+  <link rel="preload" href="{{asset "css/post.css"}}" as="style" />
   <link rel="preload" href="{{asset "css/listing.css"}}" as="style" />
   <link rel="preload" href="{{asset "js/home.js"}}" as="script" />
 {{/contentFor}}
 
 {{!-- This block loads specific styles for the index page --}}
 {{#contentFor "styles"}}
+  <link rel="stylesheet" type="text/css" href="{{asset "css/post.css"}}" media="screen" />
   <link rel="stylesheet" type="text/css" href="{{asset "css/home.css"}}" media="screen" />
   <link rel="stylesheet" type="text/css" href="{{asset "css/listing.css"}}" media="screen" />
 {{/contentFor}}
@@ -44,7 +46,7 @@ into the {body} of the default.hbs template --}}
     <div class="l-wrapper in-post {{#unless feature_image}}no-image{{/unless}} js-aos-wrapper" data-aos="fade-up"
       data-aos-delay="300">
       <div
-        class="l-post-content js-progress-content">
+        class="l-post-content">
         <div class="pos-relative js-post-content">
           {{#page}}
             <header class="l-heading">
@@ -56,6 +58,9 @@ into the {body} of the default.hbs template --}}
       </div>
     </div>
     <div class="l-wrapper" data-aos="fade-up" data-aos-delay="300">
+      <header class="m-heading">
+        <h1 class="m-heading__title">Recent Posts</h1>
+      </header>
       <div class="l-grid centered">
         {{#get "posts" filter="featured:true" include="tags" limit="5" as |featured|}}
           {{#if featured}}
@@ -111,8 +116,10 @@ into the {body} of the default.hbs template --}}
             </div>
           {{/if}}
         {{/get}}
-        {{!-- The tag below iterates over all the posts --}}
-        {{> "loop"}}
+        {{#get "posts" filter="featured:false" include="authors,tags" limit="4"}}
+          {{!-- The tag below iterates over all the posts --}}
+          {{> "loop"}}
+        {{/get}}
       </div>
     </div>
   </div>
